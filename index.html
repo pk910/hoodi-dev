@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoodi Testnet</title>
+    <meta name="description" content="Hoodi - The second long-standing, merged-from-genesis, public Ethereum testnet. Staking, infrastructure and protocol-developer testnet.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦔</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <span class="logo-icon">🦔</span>
+                <span class="logo-text">Hoodi</span>
+            </a>
+            <nav class="header-links">
+                <a href="https://hoodi.ethpandaops.io" target="_blank">Homepage</a>
+                <a href="https://hoodi.launchpad.ethereum.org" target="_blank">Staking Launchpad</a>
+                <a href="https://github.com/eth-clients/hoodi" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="status-badge">Network Active</div>
+                <h1>Hoodi Testnet</h1>
+                <p class="subtitle">
+                    The second long-standing, merged-from-genesis, public Ethereum testnet.
+                    Replacing Holesky as the staking, infrastructure, and protocol-developer testnet.
+                </p>
+                <div class="btn-group">
+                    <button class="btn btn-metamask" onclick="addToMetaMask()">
+                        <svg viewBox="0 0 35 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32.9582 1L19.8241 10.7183L22.2665 4.99099L32.9582 1Z" fill="#E17726" stroke="#E17726" stroke-width="0.25"/>
+                            <path d="M2.04858 1L15.0707 10.809L12.7401 4.99098L2.04858 1Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M28.2292 23.5334L24.7346 28.872L32.2175 30.9323L34.3611 23.6501L28.2292 23.5334Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M0.658203 23.6501L2.78889 30.9323L10.2589 28.872L6.77745 23.5334L0.658203 23.6501Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M9.88008 14.5149L7.81836 17.6507L15.1839 17.9883L14.9377 10.0098L9.88008 14.5149Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M25.1266 14.5149L19.9962 9.91895L19.824 17.9883L27.1896 17.6507L25.1266 14.5149Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M10.2593 28.872L14.7477 26.6839L10.8716 23.7012L10.2593 28.872Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                            <path d="M20.2588 26.6839L24.7343 28.872L24.1349 23.7012L20.2588 26.6839Z" fill="#E27625" stroke="#E27625" stroke-width="0.25"/>
+                        </svg>
+                        Add to MetaMask
+                    </button>
+                    <a href="https://hoodi.launchpad.ethereum.org" target="_blank" class="btn btn-primary">
+                        Staking Launchpad
+                    </a>
+                    <a href="https://hoodi-faucet.pk910.de" target="_blank" class="btn btn-secondary">
+                        Get Test ETH
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Network Information</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-label">Chain ID</div>
+                        <div class="info-card-value mono">560048</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">Network ID</div>
+                        <div class="info-card-value mono">560048</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">Launch Date</div>
+                        <div class="info-card-value">Mar 17, 2025</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">Consensus</div>
+                        <div class="info-card-value">Proof of Stake</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">Current EL Version</div>
+                        <div class="info-card-value" id="current-el-version">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">Current CL Version</div>
+                        <div class="info-card-value" id="current-cl-version">-</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Live Network Status</h2>
+                <div class="resource-section">
+                    <div id="live-status">
+                        <p class="status-loading">Loading live data...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Fork Schedule</h2>
+                <div class="resource-section">
+                    <div class="fork-timeline" id="fork-timeline"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Resources</h2>
+
+                <div class="resource-section">
+                    <h3>Block Explorers</h3>
+                    <div class="resource-list">
+                        <a href="https://hoodi.etherscan.io" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            hoodi.etherscan.io
+                        </a>
+                        <a href="https://eth-hoodi.blockscout.com" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            eth-hoodi.blockscout.com
+                        </a>
+                        <a href="https://hoodi.beaconcha.in" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            hoodi.beaconcha.in (Beacon Chain)
+                        </a>
+                        <a href="https://light-hoodi.beaconcha.in" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            light-hoodi.beaconcha.in (Dora)
+                        </a>
+                        <a href="https://hoodi.otterscan.io" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            hoodi.otterscan.io
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resource-section">
+                    <h3>Faucets</h3>
+                    <div class="resource-list">
+                        <a href="https://hoodi-faucet.pk910.de" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            hoodi-faucet.pk910.de (PoW Faucet)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resource-section">
+                    <h3>Staking</h3>
+                    <div class="resource-list">
+                        <a href="https://hoodi.launchpad.ethereum.org" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            Staking Launchpad
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resource-section">
+                    <h3>Monitoring</h3>
+                    <div class="resource-list">
+                        <a href="https://ethstats.hoodi.ethpandaops.io" target="_blank" class="resource-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            ethstats.hoodi.ethpandaops.io
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Genesis Information</h2>
+                <div class="resource-section">
+                    <table class="genesis-table">
+                        <tr>
+                            <td>Genesis Fork Version</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0x10000910</code>
+                                    <button class="copy-btn" data-copy="0x10000910" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Genesis Hash (EL)</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0xbbe312868b376a3001692a646dd2d7d1e4406380dfd86b98aa8a34d1557c971b</code>
+                                    <button class="copy-btn" data-copy="0xbbe312868b376a3001692a646dd2d7d1e4406380dfd86b98aa8a34d1557c971b" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>State Root (EL)</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0xda87d7f5f91c51508791bbcbd4aa5baf04917830b86985eeb9ad3d5bfb657576</code>
+                                    <button class="copy-btn" data-copy="0xda87d7f5f91c51508791bbcbd4aa5baf04917830b86985eeb9ad3d5bfb657576" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Block Root (CL)</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0x376450cd7fb9f05ade82a7f88565ac57af449ac696b1a6ac5cc7dac7d467b7d6</code>
+                                    <button class="copy-btn" data-copy="0x376450cd7fb9f05ade82a7f88565ac57af449ac696b1a6ac5cc7dac7d467b7d6" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>State Root (CL)</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0x2683ebc120f91f740c7bed4c866672d01e1ba51b4cc360297138465ee5df40f0</code>
+                                    <button class="copy-btn" data-copy="0x2683ebc120f91f740c7bed4c866672d01e1ba51b4cc360297138465ee5df40f0" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Genesis Validator Root</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0x212f13fc4df078b6cb7db228f1c8307566dcecf900867401a92023d7ba99cb5f</code>
+                                    <button class="copy-btn" data-copy="0x212f13fc4df078b6cb7db228f1c8307566dcecf900867401a92023d7ba99cb5f" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Contract</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>0x00000000219ab540356cBB839Cbe05303d7705Fa</code>
+                                    <button class="copy-btn" data-copy="0x00000000219ab540356cBB839Cbe05303d7705Fa" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>DNS Discovery</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>all.hoodi.ethdisco.net</code>
+                                    <button class="copy-btn" data-copy="all.hoodi.ethdisco.net" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Snap Discovery</td>
+                            <td>
+                                <div class="genesis-value">
+                                    <code>snap.hoodi.ethdisco.net</code>
+                                    <button class="copy-btn" data-copy="snap.hoodi.ethdisco.net" title="Copy to clipboard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Important Notice</h2>
+                <div class="resource-section">
+                    <p class="notice-text">
+                        Hoodi is designed for <strong>staking, infrastructure, and protocol development testing</strong>.
+                        For testing decentralized applications, smart contracts, and other EVM functionality,
+                        please use <a href="https://sepolia.dev" target="_blank">Sepolia</a>.
+                    </p>
+                    <p class="notice-meta">
+                        LTS: December 2027 • EOL: December 2028
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                Maintained by <a href="https://ethpandaops.io" target="_blank">ethPandaOps</a> •
+                <a href="https://github.com/eth-clients/hoodi" target="_blank">GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
