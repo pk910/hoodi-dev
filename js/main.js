@@ -1,6 +1,8 @@
 // Store for live data
 let liveData = null;
-let epochsData = null;
+let splitsData = null;
+let lastUpdateTime = null;
+let updateTimerInterval = null;
 
 // Utility functions
 function formatDate(timestamp) {
@@ -60,6 +62,21 @@ function formatDuration(seconds) {
     return hours > 0 ? `${days}d ${hours}h` : `${days}d`;
 }
 
+function formatTimeAgo(timestamp) {
+    const now = Date.now();
+    const seconds = Math.floor((now - timestamp) / 1000);
+
+    if (seconds < 60) {
+        return 'just now';
+    }
+    if (seconds < 3600) {
+        const mins = Math.floor(seconds / 60);
+        return `${mins} min ago`;
+    }
+    const hours = Math.floor(seconds / 3600);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+}
+
 // API functions
 async function fetchApiData(endpoint) {
     try {
@@ -86,50 +103,51 @@ async function fetchApiData(endpoint) {
 }
 
 async function fetchNetworkData() {
-    // Fetch both endpoints in parallel
-    const [overview, epochs] = await Promise.all([
+    // Fetch all endpoints in parallel
+    const [overview, splits] = await Promise.all([
         fetchApiData(HOODI_CONFIG.api.endpoints.overview),
-        fetchApiData(HOODI_CONFIG.api.endpoints.epochs)
+        fetchApiData(HOODI_CONFIG.api.endpoints.splits)
     ]);
 
     liveData = overview;
-    epochsData = epochs;
+    splitsData = splits;
+
+    if (liveData !== null) {
+        lastUpdateTime = Date.now();
+    }
 
     return liveData !== null;
 }
 
-// Calculate average sync participation from epochs data
-function getAverageParticipation() {
-    if (!epochsData || !epochsData.epochs || epochsData.epochs.length === 0) {
-        return null;
+function updateLastUpdateDisplay() {
+    const el = document.getElementById('last-update-time');
+    if (el && lastUpdateTime) {
+        el.textContent = formatTimeAgo(lastUpdateTime);
     }
-
-    // Filter epochs with valid sync_participation data
-    const validEpochs = epochsData.epochs.filter(e => e.sync_participation > 0);
-    if (validEpochs.length === 0) return null;
-
-    const avg = validEpochs.reduce((sum, e) => sum + e.sync_participation, 0) / validEpochs.length;
-    return avg;
 }
 
-// Calculate block production rate from epochs data
-function getBlockProductionRate() {
-    if (!epochsData || !epochsData.epochs || epochsData.epochs.length === 0) {
+async function refreshLiveStatus() {
+    await fetchNetworkData();
+    renderLiveStatus();
+    renderNetworkInfo();
+    renderForkSchedule();
+}
+
+// Get participation from canonical fork in splits data
+function getCanonicalParticipation() {
+    if (!splitsData || !splitsData.splits || splitsData.splits.length === 0) {
         return null;
     }
 
-    let totalProposed = 0;
-    let totalMissed = 0;
-
-    for (const epoch of epochsData.epochs) {
-        totalProposed += epoch.proposed_blocks || 0;
-        totalMissed += epoch.missed_blocks || 0;
+    // Find the canonical fork
+    const canonicalFork = splitsData.splits.find(s => s.is_canonical);
+    if (!canonicalFork || !canonicalFork.last_epoch_participation || canonicalFork.last_epoch_participation.length === 0) {
+        return null;
     }
 
-    const total = totalProposed + totalMissed;
-    if (total === 0) return null;
-
-    return (totalProposed / total) * 100;
+    // Get the highest participation from the array (most recent epochs)
+    const maxParticipation = Math.max(...canonicalFork.last_epoch_participation);
+    return maxParticipation;
 }
 
 // Map API forks to our display format
@@ -298,15 +316,15 @@ function renderLiveStatus() {
     const unfinalitySeconds = unfinalityEpochs * secondsPerEpoch;
 
     // Get participation data
-    const avgParticipation = getAverageParticipation();
-    const blockRate = getBlockProductionRate();
+    const participation = getCanonicalParticipation();
+    const isParticipationLow = participation !== null && participation < 66;
 
     container.innerHTML = `
         <div class="live-status-sections">
             <!-- Head Status -->
             <div class="status-section">
                 <h4 class="status-section-title">Chain Head</h4>
-                <div class="status-row cols-3">
+                <div class="status-row cols-2">
                     <div class="status-item">
                         <span class="status-label">Slot</span>
                         <span class="status-value mono">${formatNumber(state.current_slot)}</span>
@@ -314,27 +332,26 @@ function renderLiveStatus() {
                     <div class="status-item">
                         <span class="status-label">Epoch</span>
                         <span class="status-value mono">${formatNumber(state.current_epoch)}</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Epoch Progress</span>
-                        <span class="status-value">${state.current_epoch_progress.toFixed(1)}%</span>
+                        <div class="epoch-progress-bar">
+                            <div class="epoch-progress-fill" style="width: ${state.current_epoch_progress.toFixed(1)}%"></div>
+                        </div>
                     </div>
                 </div>
-                ${avgParticipation !== null || blockRate !== null ? `
-                <div class="status-row cols-2 secondary">
-                    ${avgParticipation !== null ? `
+                ${participation !== null ? `
+                <div class="status-row cols-1 secondary">
                     <div class="status-item">
-                        <span class="status-label">Sync Participation (5 epoch avg)</span>
-                        <span class="status-value">${avgParticipation.toFixed(1)}%</span>
+                        <span class="status-label">Vote Participation</span>
+                        <span class="status-value ${isParticipationLow ? 'unhealthy' : 'healthy'}">
+                            ${isParticipationLow ? '<span class="status-indicator warn"></span>' : ''}
+                            ${participation.toFixed(1)}%
+                        </span>
                     </div>
-                    ` : ''}
-                    ${blockRate !== null ? `
-                    <div class="status-item">
-                        <span class="status-label">Block Production (5 epoch avg)</span>
-                        <span class="status-value">${blockRate.toFixed(1)}%</span>
-                    </div>
-                    ` : ''}
                 </div>
+                ${isParticipationLow ? `
+                <div class="status-alert">
+                    Low participation (below 66%) - network may lose finality
+                </div>
+                ` : ''}
                 ` : ''}
             </div>
 
@@ -408,6 +425,11 @@ function renderLiveStatus() {
                         </span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Last Update -->
+            <div class="status-footer">
+                <span class="last-update">Last update: <span id="last-update-time">${lastUpdateTime ? formatTimeAgo(lastUpdateTime) : 'just now'}</span></span>
             </div>
         </div>
     `;
@@ -535,4 +557,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     renderLiveStatus();
     renderForkSchedule();
     initCopyButtons();
+
+    // Auto-refresh live status every 5 minutes
+    setInterval(refreshLiveStatus, 5 * 60 * 1000);
+
+    // Update "last update" display every 30 seconds
+    setInterval(updateLastUpdateDisplay, 30 * 1000);
 });
