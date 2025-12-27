@@ -1,0 +1,13 @@
+{
+  "name": "hoodi-dev",
+  "version": "1.0.0",
+  "description": "Hoodi Testnet Developer Portal",
+  "scripts": {
+    "build": "echo 'Static site - no build required'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pk910/hoodi-dev"
+  },
+  "license": "MIT"
+}
