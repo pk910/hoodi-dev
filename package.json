@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hoodi Testnet Developer Portal",
   "scripts": {
-    "build": "echo 'Static site - no build required'"
+    "build": "mkdir -p dist && cp -r index.html css js img dist/"
   },
   "repository": {
     "type": "git",
