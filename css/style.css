@@ -236,6 +236,23 @@ section {
 }
 
 /* Resource Links */
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.resource-grid .resource-section {
+    margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .resource-section {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -325,7 +342,8 @@ section {
     background: var(--bg-tertiary);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    overflow-x: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
     min-width: 0;
@@ -392,10 +410,6 @@ section {
 .status-row {
     display: grid;
     gap: 1rem;
-}
-
-.status-row.cols-1 {
-    grid-template-columns: 1fr;
 }
 
 .status-row.cols-2 {
@@ -473,22 +487,6 @@ section {
     font-size: 0.7rem;
     color: var(--text-muted);
     font-weight: 400;
-}
-
-/* Epoch Progress Bar */
-.epoch-progress-bar {
-    margin-top: 0.5rem;
-    height: 4px;
-    background: var(--bg-tertiary);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.epoch-progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.3s ease;
 }
 
 .status-alert {

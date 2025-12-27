@@ -1,6 +1,7 @@
 // Store for live data
 let liveData = null;
 let splitsData = null;
+let epochsData = null;
 let lastUpdateTime = null;
 let updateTimerInterval = null;
 
@@ -104,13 +105,15 @@ async function fetchApiData(endpoint) {
 
 async function fetchNetworkData() {
     // Fetch all endpoints in parallel
-    const [overview, splits] = await Promise.all([
+    const [overview, splits, epochs] = await Promise.all([
         fetchApiData(HOODI_CONFIG.api.endpoints.overview),
-        fetchApiData(HOODI_CONFIG.api.endpoints.splits)
+        fetchApiData(HOODI_CONFIG.api.endpoints.splits),
+        fetchApiData(HOODI_CONFIG.api.endpoints.epochs)
     ]);
 
     liveData = overview;
     splitsData = splits;
+    epochsData = epochs;
 
     if (liveData !== null) {
         lastUpdateTime = Date.now();
@@ -148,6 +151,26 @@ function getCanonicalParticipation() {
     // Get the highest participation from the array (most recent epochs)
     const maxParticipation = Math.max(...canonicalFork.last_epoch_participation);
     return maxParticipation;
+}
+
+// Calculate block production rate from epochs data
+function getBlockProductionRate() {
+    if (!epochsData || !epochsData.epochs || epochsData.epochs.length === 0) {
+        return null;
+    }
+
+    let totalProposed = 0;
+    let totalMissed = 0;
+
+    for (const epoch of epochsData.epochs) {
+        totalProposed += epoch.proposed_blocks || 0;
+        totalMissed += epoch.missed_blocks || 0;
+    }
+
+    const total = totalProposed + totalMissed;
+    if (total === 0) return null;
+
+    return (totalProposed / total) * 100;
 }
 
 // Map API forks to our display format
@@ -317,6 +340,7 @@ function renderLiveStatus() {
 
     // Get participation data
     const participation = getCanonicalParticipation();
+    const blockRate = getBlockProductionRate();
     const isParticipationLow = participation !== null && participation < 66;
 
     container.innerHTML = `
@@ -332,13 +356,11 @@ function renderLiveStatus() {
                     <div class="status-item">
                         <span class="status-label">Epoch</span>
                         <span class="status-value mono">${formatNumber(state.current_epoch)}</span>
-                        <div class="epoch-progress-bar">
-                            <div class="epoch-progress-fill" style="width: ${state.current_epoch_progress.toFixed(1)}%"></div>
-                        </div>
                     </div>
                 </div>
-                ${participation !== null ? `
-                <div class="status-row cols-1 secondary">
+                ${participation !== null || blockRate !== null ? `
+                <div class="status-row cols-2 secondary">
+                    ${participation !== null ? `
                     <div class="status-item">
                         <span class="status-label">Vote Participation</span>
                         <span class="status-value ${isParticipationLow ? 'unhealthy' : 'healthy'}">
@@ -346,12 +368,19 @@ function renderLiveStatus() {
                             ${participation.toFixed(1)}%
                         </span>
                     </div>
+                    ` : ''}
+                    ${blockRate !== null ? `
+                    <div class="status-item">
+                        <span class="status-label">Block Production (5 epoch avg)</span>
+                        <span class="status-value">${blockRate.toFixed(1)}%</span>
+                    </div>
+                    ` : ''}
                 </div>
+                ` : ''}
                 ${isParticipationLow ? `
                 <div class="status-alert">
                     Low participation (below 66%) - network may lose finality
                 </div>
-                ` : ''}
                 ` : ''}
             </div>
 

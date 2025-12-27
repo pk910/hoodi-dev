@@ -5,7 +5,8 @@ const HOODI_CONFIG = {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaG9vZGkuZGV2IiwicmF0ZV9saW1pdCI6MTAsImNvcnNfb3JpZ2lucyI6WyJodHRwczovL2hvb2RpLmRldiIsImh0dHBzOi8vd3d3Lmhvb2RpLmRldiJdLCJzdWIiOiJhcGktYWNjZXNzIiwiZXhwIjoxODI5MDAwNjU2LCJpYXQiOjE3NjY3OTI2NTZ9.4aqSjgmvjii1CgXYSv5tTZ2zD6NeqXTiKYtyztqbJmw',
         endpoints: {
             overview: '/network/overview',
-            splits: '/network/splits'
+            splits: '/network/splits',
+            epochs: '/epochs?limit=5'
         }
     },
 
