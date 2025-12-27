@@ -306,7 +306,7 @@ function renderLiveStatus() {
             <!-- Head Status -->
             <div class="status-section">
                 <h4 class="status-section-title">Chain Head</h4>
-                <div class="status-row">
+                <div class="status-row cols-3">
                     <div class="status-item">
                         <span class="status-label">Slot</span>
                         <span class="status-value mono">${formatNumber(state.current_slot)}</span>
@@ -321,7 +321,7 @@ function renderLiveStatus() {
                     </div>
                 </div>
                 ${avgParticipation !== null || blockRate !== null ? `
-                <div class="status-row secondary">
+                <div class="status-row cols-2 secondary">
                     ${avgParticipation !== null ? `
                     <div class="status-item">
                         <span class="status-label">Sync Participation (5 epoch avg)</span>
@@ -330,7 +330,7 @@ function renderLiveStatus() {
                     ` : ''}
                     ${blockRate !== null ? `
                     <div class="status-item">
-                        <span class="status-label">Block Production</span>
+                        <span class="status-label">Block Production (5 epoch avg)</span>
                         <span class="status-value">${blockRate.toFixed(1)}%</span>
                     </div>
                     ` : ''}
@@ -341,20 +341,20 @@ function renderLiveStatus() {
             <!-- Finalization Status -->
             <div class="status-section">
                 <h4 class="status-section-title">Finalization</h4>
-                <div class="status-row">
+                <div class="status-row cols-2">
                     <div class="status-item">
-                        <span class="status-label">Finalized</span>
+                        <span class="status-label">Finalized Epoch</span>
                         <span class="status-value ${isFinalizing ? 'healthy' : 'unhealthy'}">
                             <span class="status-indicator ${isFinalizing ? 'ok' : 'warn'}"></span>
-                            ${formatNumber(checkpoints.finalized_epoch)}
+                            <span class="mono">${formatNumber(checkpoints.finalized_epoch)}</span>
                             <span class="status-lag">(${finalizedLag} behind)</span>
                         </span>
                     </div>
                     <div class="status-item">
-                        <span class="status-label">Justified</span>
+                        <span class="status-label">Justified Epoch</span>
                         <span class="status-value ${isJustifying ? 'healthy' : 'unhealthy'}">
                             <span class="status-indicator ${isJustifying ? 'ok' : 'warn'}"></span>
-                            ${formatNumber(checkpoints.justified_epoch)}
+                            <span class="mono">${formatNumber(checkpoints.justified_epoch)}</span>
                             <span class="status-lag">(${justifiedLag} behind)</span>
                         </span>
                     </div>
@@ -369,7 +369,7 @@ function renderLiveStatus() {
             <!-- Validator Stats -->
             <div class="status-section">
                 <h4 class="status-section-title">Validators</h4>
-                <div class="status-row">
+                <div class="status-row cols-2">
                     <div class="status-item">
                         <span class="status-label">Active Validators</span>
                         <span class="status-value mono">${formatNumber(validators.active_validator_count)}</span>
@@ -384,7 +384,7 @@ function renderLiveStatus() {
             <!-- Queue Stats -->
             <div class="status-section">
                 <h4 class="status-section-title">Validator Queues</h4>
-                <div class="status-row">
+                <div class="status-row cols-2">
                     <div class="status-item">
                         <span class="status-label">Deposit Queue</span>
                         <span class="status-value">
