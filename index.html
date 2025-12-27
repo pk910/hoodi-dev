@@ -8,9 +8,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="img/hoodi-logo-32.png">
     <link rel="icon" type="image/png" sizes="64x64" href="img/hoodi-logo-64.png">
     <link rel="apple-touch-icon" href="img/hoodi-logo-128.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -286,17 +283,100 @@
                     </div>
                 </div>
 
-                <div class="resource-section">
-                    <h3>RPC Endpoints</h3>
-                    <div class="resource-list">
-                        <a href="https://rpc.hoodi.ethpandaops.io" target="_blank" class="resource-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                            rpc.hoodi.ethpandaops.io <span class="resource-meta">(JSON-RPC)</span>
-                        </a>
-                        <a href="https://checkpoint-sync.hoodi.ethpandaops.io" target="_blank" class="resource-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                            checkpoint-sync.hoodi.ethpandaops.io <span class="resource-meta">(Checkpoint Sync)</span>
-                        </a>
+                <div class="resource-grid">
+                    <div class="resource-section">
+                        <h3>RPC Endpoints</h3>
+                        <div class="resource-list" id="rpc-endpoints">
+                            <div class="resource-link-row" data-endpoint="rpc" data-url="https://rpc.hoodi.ethpandaops.io">
+                                <a href="https://rpc.hoodi.ethpandaops.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    rpc.hoodi.ethpandaops.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="rpc" data-url="https://0xrpc.io/hoodi">
+                                <a href="https://0xrpc.io/hoodi" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    0xrpc.io/hoodi
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="rpc" data-url="https://ethereum-hoodi.gateway.tatum.io">
+                                <a href="https://ethereum-hoodi.gateway.tatum.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    ethereum-hoodi.gateway.tatum.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="rpc" data-url="https://hoodi.drpc.org">
+                                <a href="https://hoodi.drpc.org" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi.drpc.org
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row">
+                                <a href="https://www.alchemy.com/" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    Alchemy <span class="resource-meta">(requires auth)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resource-section">
+                        <h3>Checkpoint Sync Providers</h3>
+                        <div class="resource-list" id="checkpoint-endpoints">
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://checkpoint-sync.hoodi.ethpandaops.io">
+                                <a href="https://checkpoint-sync.hoodi.ethpandaops.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    checkpoint-sync.hoodi.ethpandaops.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://hoodi-checkpoint-sync.stakely.io">
+                                <a href="https://hoodi-checkpoint-sync.stakely.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi-checkpoint-sync.stakely.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://hoodi.beaconstate.ethstaker.cc">
+                                <a href="https://hoodi.beaconstate.ethstaker.cc" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi.beaconstate.ethstaker.cc
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://hoodi.checkpoint.sigp.io">
+                                <a href="https://hoodi.checkpoint.sigp.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi.checkpoint.sigp.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://beaconstate-hoodi.chainsafe.io">
+                                <a href="https://beaconstate-hoodi.chainsafe.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    beaconstate-hoodi.chainsafe.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://hoodi.beaconstate.info">
+                                <a href="https://hoodi.beaconstate.info" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi.beaconstate.info
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                            <div class="resource-link-row" data-endpoint="checkpoint" data-url="https://hoodi-checkpoint-sync.attestant.io">
+                                <a href="https://hoodi-checkpoint-sync.attestant.io" target="_blank" class="resource-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                    hoodi-checkpoint-sync.attestant.io
+                                </a>
+                                <span class="endpoint-status" title="Checking..."></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

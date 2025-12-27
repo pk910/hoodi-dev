@@ -18,7 +18,7 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -251,6 +251,23 @@ section {
     .resource-grid {
         grid-template-columns: 1fr;
     }
+
+    .resource-section {
+        padding: 1rem;
+    }
+
+    .resource-link-row {
+        flex-wrap: nowrap;
+    }
+
+    .resource-link-row .resource-link {
+        font-size: 0.85rem;
+    }
+
+    .endpoint-status {
+        min-width: 50px;
+        font-size: 0.65rem;
+    }
 }
 
 .resource-section {
@@ -259,6 +276,7 @@ section {
     border-radius: 0.75rem;
     padding: 1.5rem;
     margin-bottom: 1rem;
+    overflow: hidden;
 }
 
 .resource-section h3 {
@@ -272,6 +290,7 @@ section {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    min-width: 0;
 }
 
 .resource-link {
@@ -297,6 +316,59 @@ section {
 .resource-meta {
     color: var(--text-muted);
     font-size: 0.85em;
+}
+
+/* Resource link row with status indicator */
+.resource-link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.resource-link-row .resource-link {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.endpoint-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    min-width: 55px;
+    justify-content: flex-end;
+    white-space: nowrap;
+}
+
+.endpoint-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.endpoint-status.checking::before {
+    background: var(--text-muted);
+    animation: pulse 1.5s infinite;
+}
+
+.endpoint-status.online::before {
+    background: var(--success);
+    box-shadow: 0 0 4px var(--success);
+}
+
+.endpoint-status.offline::before {
+    background: #ef4444;
+    box-shadow: 0 0 4px #ef4444;
 }
 
 /* Genesis Info */

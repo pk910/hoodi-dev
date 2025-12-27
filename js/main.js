@@ -576,6 +576,144 @@ function initCopyButtons() {
     });
 }
 
+// Endpoint liveness checking
+
+// Fallback check using no-cors mode - can't read response but can detect reachability
+async function checkEndpointNoCors(url) {
+    const startTime = performance.now();
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        await fetch(url, {
+            method: 'HEAD',
+            mode: 'no-cors',
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        const elapsed = Math.round(performance.now() - startTime);
+
+        // With no-cors, we get an opaque response but if we reach here, server responded
+        return { status: 'online', latency: elapsed };
+    } catch (err) {
+        const elapsed = Math.round(performance.now() - startTime);
+        return { status: 'offline', latency: elapsed };
+    }
+}
+
+async function checkRpcEndpoint(url) {
+    const startTime = performance.now();
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'eth_chainId',
+                params: [],
+                id: 1
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        const elapsed = Math.round(performance.now() - startTime);
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.result) {
+                return { status: 'online', latency: elapsed };
+            }
+        }
+        return { status: 'offline', latency: elapsed };
+    } catch (err) {
+        // CORS error - fallback to no-cors mode to check reachability
+        if (err.name === 'TypeError') {
+            return await checkEndpointNoCors(url);
+        }
+        const elapsed = Math.round(performance.now() - startTime);
+        return { status: 'offline', latency: elapsed };
+    }
+}
+
+async function checkCheckpointEndpoint(url) {
+    const startTime = performance.now();
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch(url + '/eth/v1/beacon/genesis', {
+            method: 'GET',
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        const elapsed = Math.round(performance.now() - startTime);
+
+        if (response.ok) {
+            return { status: 'online', latency: elapsed };
+        }
+        return { status: 'offline', latency: elapsed };
+    } catch (err) {
+        // CORS error - fallback to no-cors mode to check reachability
+        if (err.name === 'TypeError') {
+            return await checkEndpointNoCors(url + '/eth/v1/beacon/genesis');
+        }
+        const elapsed = Math.round(performance.now() - startTime);
+        return { status: 'offline', latency: elapsed };
+    }
+}
+
+function updateEndpointStatus(row, result) {
+    const statusEl = row.querySelector('.endpoint-status');
+    if (!statusEl) return;
+
+    statusEl.className = 'endpoint-status ' + result.status;
+
+    if (result.status === 'online') {
+        statusEl.textContent = result.latency + 'ms';
+        statusEl.title = 'Online - ' + result.latency + 'ms response time';
+    } else {
+        statusEl.textContent = 'Offline';
+        statusEl.title = 'Endpoint unreachable or returned an error';
+    }
+}
+
+async function checkAllEndpoints() {
+    const rows = document.querySelectorAll('.resource-link-row[data-endpoint]');
+
+    // Mark all as checking
+    rows.forEach(row => {
+        const statusEl = row.querySelector('.endpoint-status');
+        if (statusEl) {
+            statusEl.className = 'endpoint-status checking';
+            statusEl.textContent = '';
+            statusEl.title = 'Checking...';
+        }
+    });
+
+    // Check all endpoints in parallel
+    const checks = Array.from(rows).map(async (row) => {
+        const type = row.dataset.endpoint;
+        const url = row.dataset.url;
+
+        let result;
+        if (type === 'rpc') {
+            result = await checkRpcEndpoint(url);
+        } else if (type === 'checkpoint') {
+            result = await checkCheckpointEndpoint(url);
+        }
+
+        updateEndpointStatus(row, result);
+    });
+
+    await Promise.all(checks);
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async function() {
     // Try to fetch live data first
@@ -587,8 +725,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     renderForkSchedule();
     initCopyButtons();
 
+    // Check endpoint liveness
+    checkAllEndpoints();
+
     // Auto-refresh live status every 5 minutes
     setInterval(refreshLiveStatus, 5 * 60 * 1000);
+
+    // Re-check endpoints every 2 minutes
+    setInterval(checkAllEndpoints, 2 * 60 * 1000);
 
     // Update "last update" display every 30 seconds
     setInterval(updateLastUpdateDisplay, 30 * 1000);
